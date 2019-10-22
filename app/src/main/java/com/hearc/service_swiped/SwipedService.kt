@@ -12,9 +12,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.ViewModelProvider
 import kotlin.concurrent.thread
 
-class SwipedService() : Service() {
+class SwipedService : Service() {
 
 
 
@@ -35,14 +36,12 @@ class SwipedService() : Service() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    @TargetApi(Build.VERSION_CODES.M)
     fun createNotification() {
         val resultIntent = Intent(this, Result::class.java)
         val pendingIntent =
             PendingIntent.getService(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         thread {
-            Log.d("VERGE", "Coucou")
+            Log.d("Test", "notification swiped")
 //            Thread.sleep(10000)
             val icon = Icon.createWithResource(this, android.R.drawable.ic_dialog_info)
             val action: Notification.Action =
@@ -59,24 +58,12 @@ class SwipedService() : Service() {
 
             notificationManager?.notify(101, notification)
         }
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//
-//            val importance = NotificationManager.IMPORTANCE_DEFAULT
-//            val channel = NotificationChannel("swipedChannel", "Swiped Chanel", importance).apply {
-//                description = "this is a notification"
-//            }
-//
-//            val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//            notificationManager.createNotificationChannel(channel)
-//
-//        }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
+        onTaskRemoved(intent)
         Toast.makeText(this, "Service started!", Toast.LENGTH_SHORT).show()
-        createNotification()
+//        createNotification()
         mediaPlayer.start()
         return super.onStartCommand(intent, flags, startId)
     }
