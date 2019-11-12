@@ -3,6 +3,11 @@
     package="com.hearc.service_swiped">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <uses-feature
+        android:name="android.hardware."
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".timer.MainActivityTimer">
+        <activity android:name=".chat_head_service.WindowManager">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".swiped.MainActivity">
+        <activity android:name=".timer.MainActivityTimer">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 <!--                <action android:name="android.intent.action.MAIN" />-->
@@ -27,7 +32,17 @@
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
             </intent-filter>
         </activity>
+        <activity android:name=".swiped.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <!-- <action android:name="android.intent.action.MAIN" /> -->
 
+
+                <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            </intent-filter>
+        </activity>
+
+        <service android:name=".chat_head_service.ChatHeadService" />
         <service android:name=".swiped.ForegroundService" />
         <service android:name=".timer.TimerService" />
         <service
