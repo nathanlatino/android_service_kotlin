@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hearc.service_swiped">
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,23 +11,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".timer.MainActivityTimer">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".swiped.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-        <service
-            android:name=".ForegroundService">
-        </service>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            </intent-filter>
+        </activity>
 
+        <service android:name=".swiped.ForegroundService" />
+        <service android:name=".timer.TimerService" />
         <service
-            android:name=".SwipedService"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:name=".swiped.SwipedService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
     </application>
 
 </manifest>

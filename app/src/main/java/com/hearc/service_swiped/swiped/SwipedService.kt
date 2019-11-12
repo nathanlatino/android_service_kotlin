@@ -1,18 +1,14 @@
-package com.hearc.service_swiped
+package com.hearc.service_swiped.swiped
 
-import android.annotation.TargetApi
 import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.media.MediaPlayer
-import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.core.app.NotificationCompat
-import androidx.lifecycle.ViewModelProvider
+import com.hearc.service_swiped.R
 import kotlin.concurrent.thread
 
 class SwipedService : Service() {

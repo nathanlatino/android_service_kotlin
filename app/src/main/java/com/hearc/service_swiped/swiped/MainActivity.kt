@@ -1,21 +1,9 @@
-package com.hearc.service_swiped
+package com.hearc.service_swiped.swiped
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.ComponentActivity
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.hearc.service_swiped.R
 
 
 class MainActivity : AppCompatActivity() {
@@ -34,7 +22,6 @@ class MainActivity : AppCompatActivity() {
             ForegroundService.startService(this, "Foreground Service is running...")
 
         }
-
 
         b_stop.setOnClickListener({
             //            stopService(Intent(this, SwipedService::class.java))

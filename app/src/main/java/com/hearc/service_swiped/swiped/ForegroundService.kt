@@ -1,4 +1,4 @@
-package com.hearc.service_swiped
+package com.hearc.service_swiped.swiped
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -6,12 +6,10 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import kotlin.concurrent.thread
 
 class ForegroundService : Service() {
 
@@ -33,7 +31,6 @@ class ForegroundService : Service() {
 
     override fun onCreate() {
 //        startForeground()
-
         super.onCreate()
 
     }
@@ -56,7 +53,7 @@ class ForegroundService : Service() {
             .build()
 
 
-        Thread.sleep(5000)
+//        Thread.sleep(5000)
         startForeground(1, notification)
         Log.d("TEST", "Notification create")
 
@@ -71,7 +68,7 @@ class ForegroundService : Service() {
     private fun createNotificationChannel() {
         val serviceChannel = NotificationChannel(
             CHANNEL_ID, "Foreground Service Channel",
-            NotificationManager.IMPORTANCE_DEFAULT
+            NotificationManager.IMPORTANCE_LOW
         )
         val manager = getSystemService(NotificationManager::class.java)
         manager!!.createNotificationChannel(serviceChannel)
