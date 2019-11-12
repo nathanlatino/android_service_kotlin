@@ -43,7 +43,7 @@ class ChatHeadService : Service() {
         params.x = 0
         params.y = 0
 
-        chatHead.setOnTouchListener(listenerSwipe(params))
+        chatHead.setOnTouchListener(listenerSwipe())
 
 
         windowManager.addView(chatHead, params)
@@ -57,7 +57,7 @@ class ChatHeadService : Service() {
 
 
     //Listener
-    private fun listenerSwipe(params: WindowManager.LayoutParams): View.OnTouchListener {
+    private fun listenerSwipe(): View.OnTouchListener {
         return object : View.OnTouchListener {
             private var initialX = 0f
             private var initialY = 0f
