@@ -3,25 +3,21 @@ package com.hearc.service_swiped.chat_head_service
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.PixelFormat
-import android.graphics.PorterDuff
-import android.graphics.drawable.Drawable
 import android.os.IBinder
 import android.util.Log
-import android.view.*
+import android.view.Gravity
+import android.view.MotionEvent
+import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
-import androidx.core.content.ContextCompat
-import com.hearc.service_swiped.R
-import kotlin.math.log
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.widget.Toast
+import kotlin.math.absoluteValue
+import kotlin.math.pow
 
 
 class ChatHeadService : Service() {
     private lateinit var windowManager: WindowManager
-    private lateinit var chatHead: ImageView
+    private lateinit var chatHead: View
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -32,73 +28,65 @@ class ChatHeadService : Service() {
 
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
-        chatHead = ImageView(this)
-        chatHead.setImageResource(R.drawable.android_head)
+        chatHead = View(this)
+//        chatHead.setImageResource(R.drawable.android_head)
 
         var params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
             PixelFormat.TRANSLUCENT
         )
 
-        params.gravity = Gravity.TOP and Gravity.LEFT
+        params.gravity = Gravity.CENTER and Gravity.CENTER
         params.x = 0
-        params.y = 100
-        Log.v("ChatHead", chatHead.toString());
-
-        chatHead.performClick()
+        params.y = 0
 
         chatHead.setOnTouchListener(listenerSwipe(params))
 
 
         windowManager.addView(chatHead, params)
 
-
-    }
-
-    private fun listenerSwipe(params: WindowManager.LayoutParams): View.OnTouchListener {
-        return object : View.OnTouchListener {
-            private var initialX = 0
-            private var initialY = 0
-            private var initialTouchX = 0.toFloat()
-            private var initialTouchY = 0.toFloat()
-
-            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                when (event?.getAction()) {
-                    MotionEvent.ACTION_DOWN -> {
-                        getValue(event)
-                        return true
-                    }
-                    MotionEvent.ACTION_UP -> return true
-                    MotionEvent.ACTION_MOVE -> {
-                        calcMove(event)
-                        return true
-                    }
-                    else -> return false
-                }
-            }
-
-            private fun getValue(event: MotionEvent) {
-                initialX = params.x
-                initialY = params.y
-
-                initialTouchX = event.getRawX()
-                initialTouchY = event.getRawY()
-
-            }
-
-            private fun calcMove(event: MotionEvent) {
-                params.x = initialX + (event.getRawX() - initialTouchX).toInt();
-                params.y = initialY + (event.getRawY() - initialTouchY).toInt();
-                windowManager.updateViewLayout(chatHead, params);
-            }
-        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         windowManager.removeView(chatHead)
+    }
+
+
+    //Listener
+    private fun listenerSwipe(params: WindowManager.LayoutParams): View.OnTouchListener {
+        return object : View.OnTouchListener {
+            private var initialX = 0f
+            private var initialY = 0f
+            private var dist = 0f
+
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                when (event?.getAction()) {
+                    MotionEvent.ACTION_DOWN -> {
+                        getPos(event)
+                        return true
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        calcMove(event)
+                        return true
+                    }
+                    MotionEvent.ACTION_MOVE -> return true
+                    else -> return false
+                }
+            }
+
+            private fun getPos(event : MotionEvent) {
+                initialX = event.x
+                initialY = event.y
+            }
+
+            private fun calcMove(event: MotionEvent) {
+                dist = ((initialX - event.x) + (initialY - event.y)).absoluteValue
+                Toast.makeText(this@ChatHeadService, "distance : $dist", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
