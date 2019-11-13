@@ -14,7 +14,7 @@ import kotlin.math.absoluteValue
 
 class ChatHeadService : Service() {
     private lateinit var windowManager: WindowManager
-    private lateinit var overlayView: GestureOverlayView
+    private lateinit var overlayView: View
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -24,14 +24,14 @@ class ChatHeadService : Service() {
         super.onCreate()
 
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        overlayView = GestureOverlayView(this)
+        overlayView = View(this)
 //        overlayView.setImageResource(R.drawable.android_head)
 
         var params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
             PixelFormat.TRANSLUCENT
         )
 
@@ -61,8 +61,7 @@ class ChatHeadService : Service() {
             private var dist = 0f
 
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                MotionEvent.ACTION_OUTSIDE
-
+                Toast.makeText(this@ChatHeadService, "outside", Toast.LENGTH_SHORT).show();
                 when (event?.getAction()) {
                     MotionEvent.ACTION_DOWN -> {
                         getPos(event)
@@ -72,6 +71,7 @@ class ChatHeadService : Service() {
                         calcMove(event)
                         return true
                     }
+                    MotionEvent.ACTION_OUTSIDE -> return true
                     MotionEvent.ACTION_MOVE -> return true
                     else -> return false
                 }
