@@ -17,7 +17,7 @@ import kotlin.math.pow
 
 class ChatHeadService : Service() {
     private lateinit var windowManager: WindowManager
-    private lateinit var chatHead: GestureOverlayView
+    private lateinit var view: GestureOverlayView
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -27,12 +27,12 @@ class ChatHeadService : Service() {
         super.onCreate()
 
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        chatHead = GestureOverlayView(this)
+        view = GestureOverlayView(this)
 //        chatHead.setImageResource(R.drawable.android_head)
 
         var params = WindowManager.LayoutParams(
-            1,
-            1,
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
@@ -42,17 +42,17 @@ class ChatHeadService : Service() {
         params.gravity = Gravity.TOP
         params.x = 0
         params.y = 0
-        params.token = chatHead.windowToken
+        params.token = view.windowToken
 
-        chatHead.setOnTouchListener(listenerSwipe())
+        view.setOnTouchListener(listenerSwipe())
 
 
-        windowManager.addView(chatHead, params)
+        windowManager.addView(view, params)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        windowManager.removeView(chatHead)
+        windowManager.removeView(view)
     }
 
 
