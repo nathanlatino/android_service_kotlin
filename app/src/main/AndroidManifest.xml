@@ -42,7 +42,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".chat_head_service.ChatHeadService" />
+        <service android:name=".chat_head_service.ChatHeadService"/>
         <service android:name=".swiped.ForegroundService" />
         <service android:name=".timer.TimerService" />
         <service

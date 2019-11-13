@@ -3,21 +3,21 @@ package com.hearc.service_swiped.chat_head_service
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.gesture.GestureOverlayView
 import android.graphics.PixelFormat
 import android.os.IBinder
 import android.util.Log
-import android.view.Gravity
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.view.isVisible
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 
 
 class ChatHeadService : Service() {
     private lateinit var windowManager: WindowManager
-    private lateinit var chatHead: View
+    private lateinit var chatHead: GestureOverlayView
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -27,27 +27,27 @@ class ChatHeadService : Service() {
         super.onCreate()
 
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-
-        chatHead = View(this)
+        chatHead = GestureOverlayView(this)
 //        chatHead.setImageResource(R.drawable.android_head)
 
         var params = WindowManager.LayoutParams(
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT,
+            1,
+            1,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
         )
 
-        params.gravity = Gravity.CENTER and Gravity.CENTER
+
+        params.gravity = Gravity.TOP
         params.x = 0
         params.y = 0
+        params.token = chatHead.windowToken
 
         chatHead.setOnTouchListener(listenerSwipe())
 
 
         windowManager.addView(chatHead, params)
-
     }
 
     override fun onDestroy() {
@@ -64,6 +64,8 @@ class ChatHeadService : Service() {
             private var dist = 0f
 
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                MotionEvent.ACTION_OUTSIDE
+
                 when (event?.getAction()) {
                     MotionEvent.ACTION_DOWN -> {
                         getPos(event)
@@ -78,7 +80,7 @@ class ChatHeadService : Service() {
                 }
             }
 
-            private fun getPos(event : MotionEvent) {
+            private fun getPos(event: MotionEvent) {
                 initialX = event.x
                 initialY = event.y
             }
