@@ -6,18 +6,15 @@ import android.content.Intent
 import android.gesture.GestureOverlayView
 import android.graphics.PixelFormat
 import android.os.IBinder
-import android.util.Log
 import android.view.*
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.core.view.isVisible
 import kotlin.math.absoluteValue
-import kotlin.math.pow
 
 
 class ChatHeadService : Service() {
     private lateinit var windowManager: WindowManager
-    private lateinit var view: GestureOverlayView
+    private lateinit var overlayView: GestureOverlayView
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -27,8 +24,8 @@ class ChatHeadService : Service() {
         super.onCreate()
 
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        view = GestureOverlayView(this)
-//        chatHead.setImageResource(R.drawable.android_head)
+        overlayView = GestureOverlayView(this)
+//        overlayView.setImageResource(R.drawable.android_head)
 
         var params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
@@ -42,17 +39,17 @@ class ChatHeadService : Service() {
         params.gravity = Gravity.TOP
         params.x = 0
         params.y = 0
-        params.token = view.windowToken
+        params.token = overlayView.windowToken
 
-        view.setOnTouchListener(listenerSwipe())
+        overlayView.setOnTouchListener(listenerSwipe())
 
 
-        windowManager.addView(view, params)
+        windowManager.addView(overlayView, params)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        windowManager.removeView(view)
+        windowManager.removeView(overlayView)
     }
 
 
